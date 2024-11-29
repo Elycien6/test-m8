@@ -22,16 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Erreur lors du chargement des exercices:', error));
 });
 
+// Affiche ou masque la solution
 function showSolution(index) {
     const solution = document.getElementById(`solution-${index}`);
     solution.style.display = solution.style.display === 'none' ? 'block' : 'none';
 }
 
+// Gère la soumission de la réponse de l'utilisateur
 function submitAnswer(index, solution) {
     const answer = document.getElementById(`answer-${index}`).value.trim();
     const feedback = document.getElementById(`feedback-${index}`);
     
     if (answer) {
+        // Comparer la réponse utilisateur avec la solution
         if (normalize(answer) === normalize(solution)) {
             feedback.style.display = 'block';
             feedback.textContent = '✅ Correct ! Bien joué.';
@@ -47,6 +50,8 @@ function submitAnswer(index, solution) {
         feedback.style.color = 'orange';
     }
 }
+
+// Normalisation pour ignorer les espaces ou les sauts de ligne dans la comparaison
 function normalize(str) {
     return str.replace(/\s+/g, '').toLowerCase();
 }
