@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <pre id="solution-${index}" style="display:none;">${exercise.solution}</pre>
                     
                     <textarea id="answer-${index}" placeholder="Entrez votre réponse ici"></textarea>
-                    <button onclick="submitAnswer(${index})">Soumettre la réponse</button>
-                    <p id="feedback-${index}" style="display:none;">Merci pour votre réponse !</p>
+                    <button onclick="submitAnswer(${index}, '${exercise.solution}')">Soumettre la réponse</button>
+                    <p id="feedback-${index}" style="display:none;"></p>
                 `;
                 container.appendChild(exerciseDiv);
             });
@@ -27,14 +27,26 @@ function showSolution(index) {
     solution.style.display = solution.style.display === 'none' ? 'block' : 'none';
 }
 
-function submitAnswer(index) {
+function submitAnswer(index, solution) {
     const answer = document.getElementById(`answer-${index}`).value.trim();
     const feedback = document.getElementById(`feedback-${index}`);
+    
     if (answer) {
-        feedback.style.display = 'block';
-        feedback.textContent = `Merci pour votre réponse : "${answer}". Continuez ainsi !`;
+        if (normalize(answer) === normalize(solution)) {
+            feedback.style.display = 'block';
+            feedback.textContent = '✅ Correct ! Bien joué.';
+            feedback.style.color = 'green';
+        } else {
+            feedback.style.display = 'block';
+            feedback.textContent = '❌ Incorrect. Essayez encore.';
+            feedback.style.color = 'red';
+        }
     } else {
         feedback.style.display = 'block';
         feedback.textContent = 'Veuillez entrer une réponse avant de soumettre.';
+        feedback.style.color = 'orange';
     }
+}
+function normalize(str) {
+    return str.replace(/\s+/g, '').toLowerCase();
 }
